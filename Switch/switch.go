@@ -34,7 +34,7 @@ func main() {
 		fmt.Println("It's after noon") // Prints a string
 	}
 
-	whatAmI := func(i interface{}) { // Creates function whatAmI with an interface variable called i
+	whatAmI := func(i interface{}) { // Creates function whatAmI with a parameter of the type interface called i
 		switch t := i.(type) { // Switches t and sets it to the type of i
 		case bool: // When t is type of bool it executes the case
 			fmt.Println("I'm a bool") // Prints a string
