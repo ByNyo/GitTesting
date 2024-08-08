@@ -1,6 +1,6 @@
 package main
 
-import "fmt"
+import "fmt" // Importing fmt (Format)
 
 func main() {
 	fmt.Println(HelloWorld()) // Prints the HelloWorld Function
