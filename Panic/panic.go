@@ -1,6 +1,6 @@
 package main
 
-import "os"
+import "os" // Importing os (can execute things on the operating system)
 
 func main() {
 
