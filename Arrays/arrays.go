@@ -33,5 +33,5 @@ func main() {
 		{1, 2, 3}, // Values changed for the first array
 		{1, 2, 3}, // Values changed for the second array
 	}
-	fmt.Println("2d: ", twoD) // Prints a string with both arrays
+	fmt.Println("2d: ", twoD) // Prints a string with both arrays of twoD
 }
