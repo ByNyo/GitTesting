@@ -1,0 +1,1 @@
+The folder code is completely setup for use in IONOS-Forecast for the Gocast repo
