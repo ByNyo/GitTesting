@@ -76,14 +76,16 @@ func SetDate(year, month, day int) {
 	_date := fmt.Sprintf("%v-%.2v-%.2v", year, month, day)
 	_, err := checkDate(_date)
 	if err != nil { // What happens when date is invalid
-		fmt.Println("Error: ", err)
 		// TODO: Throw error at user
+		date = fmt.Sprintf("%v-%.2v-%.2v", time.Now().Year(), int(time.Now().Month()), time.Now().Day())
+		fmt.Println("Error: The date is invalid!")
 	}
 	if year >= 2010 && year <= time.Now().Year() && month >= 1 && month <= 12 && day >= 1 && day <= 31 {
 		date = _date
 	} else { // What happens when the date is out of range
 		date = fmt.Sprintf("%v-%.2v-%.2v", time.Now().Year(), int(time.Now().Month()), time.Now().Day())
 		// TODO: Throw error at user
+		fmt.Println("Error: The given date is out of range.")
 	}
 	reloadWeatherURL()
 }
@@ -192,10 +194,11 @@ func main() {
 	geoAPIURL = os.Getenv("GEOAPI_URL")
 	geoAPIKey = os.Getenv("GEOAPI_KEY")
 	SetLocationByCityName("Berlin", Cities)
-	SetDate(2010, 2, 28)
+	SetDate(2024, 8, 20)
 	reloadWeatherURL()
 	RequestWeather()
 	SaveWeather()
+	fmt.Println(today.Hours[time.Now().Hour()])
 }
 
 func checkDate(s string) (time.Time, error) {
