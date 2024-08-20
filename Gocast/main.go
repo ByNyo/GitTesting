@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jessevdk/go-flags"
 	"github.com/joho/godotenv"
 )
 
@@ -23,11 +24,12 @@ var longitude = 13.3888599
 var date string
 var cityName string
 var today DayWeather
+var opts options
 
-type opts struct {
-	WeatherAPIURL string `long:"geo-api-url" env:"GEO_API_URL" description:"URL to interact with Weather provider"`
-	GeoAPIURL     string `long:"weather-api-url" env:"WEATHER_API_URL" description:"URL to interact with GEO provider"`
-	GeoAPIKEY     string `long:"geo-api-key" env:"GEO_API_KEY" description:"URL to interact with GEO provider"`
+type options struct {
+	WeatherAPIURL string `long:"weather-api-url" env:"WEATHER_API_URL" description:"URL to interact with Weather provider"`
+	GeoAPIURL     string `long:"geo-api-url" env:"GEO_API_URL" description:"URL to interact with GEO provider"`
+	GeoAPIKEY     string `long:"geo-api-key" env:"GEO_API_KEY" description:"KEY to interact with GEO provider"`
 }
 
 type DayWeather struct {
@@ -197,9 +199,13 @@ func main() {
 	cities := make(map[string]City)
 	godotenv.Load()
 	godotenv.Load(".env.dev")
-	weatherAPIURL = os.Getenv("WEATHERAPI_URL")
-	geoAPIURL = os.Getenv("GEOAPI_URL")
-	geoAPIKey = os.Getenv("GEOAPI_KEY")
+	_, err := flags.Parse(&opts)
+	if err != nil {
+		log.Fatal(err)
+	}
+	weatherAPIURL = opts.WeatherAPIURL
+	geoAPIURL = opts.GeoAPIURL
+	geoAPIKey = opts.GeoAPIKEY
 	setDateAndLocationByCityName(2024, 8, 20, "Berlin", cities)
 	requestWeather()
 	saveWeather()
