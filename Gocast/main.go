@@ -24,6 +24,12 @@ var date string
 var cityName string
 var today DayWeather
 
+type opts struct {
+	WeatherAPIURL string `long:"geo-api-url" env:"GEO_API_URL" description:"URL to interact with Weather provider"`
+	GeoAPIURL     string `long:"weather-api-url" env:"WEATHER_API_URL" description:"URL to interact with GEO provider"`
+	GeoAPIKEY     string `long:"geo-api-key" env:"GEO_API_KEY" description:"URL to interact with GEO provider"`
+}
+
 type DayWeather struct {
 	Hours []HourWeather `json:"weather"`
 }
