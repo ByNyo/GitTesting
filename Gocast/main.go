@@ -62,35 +62,36 @@ type City struct {
 	Lon float64 `json:"lon"`
 }
 
-func SetDateAndLocationByCityName(year, month, day int, cityName string, cities map[string]City) {
-	SetDate(year, month, day)
-	SetLocationByCityName(cityName, cities)
+func setDateAndLocationByCityName(year, month, day int, cityName string, cities map[string]City) {
+	setDate(year, month, day)
+	setLocationByCityName(cityName, cities)
 }
 
-func SetDateAndLocation(year, month, day int, lat, lon float64) {
-	SetDate(year, month, day)
-	SetLocation(lat, lon)
+func setDateAndLocation(year, month, day int, lat, lon float64) {
+	setDate(year, month, day)
+	setLocation(lat, lon)
 }
 
-func SetDate(year, month, day int) {
+func setDate(year, month, day int) {
+	now := time.Now()
 	_date := fmt.Sprintf("%v-%.2v-%.2v", year, month, day)
 	_, err := checkDate(_date)
 	if err != nil { // What happens when date is invalid
 		// TODO: Throw error at user
-		date = fmt.Sprintf("%v-%.2v-%.2v", time.Now().Year(), int(time.Now().Month()), time.Now().Day())
+		date = now.Format("2006-01-02")
 		fmt.Println("Error: The date is invalid!")
 	}
-	if year >= 2010 && year <= time.Now().Year() && month >= 1 && month <= 12 && day >= 1 && day <= 31 {
+	if year >= 2010 && year <= now.Year() && month >= 1 && month <= 12 && day >= 1 && day <= 31 {
 		date = _date
 	} else { // What happens when the date is out of range
-		date = fmt.Sprintf("%v-%.2v-%.2v", time.Now().Year(), int(time.Now().Month()), time.Now().Day())
+		date = now.Format("2006-01-02")
 		// TODO: Throw error at user
 		fmt.Println("Error: The given date is out of range.")
 	}
 	reloadWeatherURL()
 }
 
-func SetLocation(lat, lon float64) {
+func setLocation(lat, lon float64) {
 	if lat <= 54 && lat >= 48 && lon <= 14 && lon >= 6 {
 		latitude = lat
 		longitude = lon
@@ -100,21 +101,21 @@ func SetLocation(lat, lon float64) {
 	}
 }
 
-func SetLocationByCityName(name string, cities map[string]City) {
-	cities = ReadCities(name, cities)
+func setLocationByCityName(name string, cities map[string]City) {
+	cities = readCities(name, cities)
 	if city, exists := cities[strings.ToLower(name)]; exists { // When the city exists
-		SetLocation(city.Lat, city.Lon)
+		setLocation(city.Lat, city.Lon)
 	} else { // When the city doesn't exist
-		SaveCityByName(name, cities)
-		SetLocationByCityName(name, cities)
+		saveCityByName(name, cities)
+		setLocationByCityName(name, cities)
 		// Maybe throw error
 	}
 }
 
-func ReadCities(name string, cities map[string]City) map[string]City {
+func readCities(name string, cities map[string]City) map[string]City {
 	file, err := os.Open("resources/cities.json")
 	if err != nil {
-		SaveCityByName(name, cities)
+		saveCityByName(name, cities)
 	}
 	defer file.Close()
 
@@ -126,7 +127,7 @@ func ReadCities(name string, cities map[string]City) map[string]City {
 	return cities
 }
 
-func SaveCityByName(name string, cities map[string]City) string {
+func saveCityByName(name string, cities map[string]City) string {
 	cityName = name
 	reloadGeoURL()
 	var owcities []OWCity
@@ -187,17 +188,19 @@ func reloadGeoURL() {
 }
 
 func main() {
-	Cities := make(map[string]City)
+	cities := make(map[string]City)
 	godotenv.Load()
 	godotenv.Load(".env.dev")
 	weatherAPIURL = os.Getenv("WEATHERAPI_URL")
 	geoAPIURL = os.Getenv("GEOAPI_URL")
 	geoAPIKey = os.Getenv("GEOAPI_KEY")
-	SetLocationByCityName("Berlin", Cities)
-	SetDate(2024, 8, 20)
-	reloadWeatherURL()
-	RequestWeather()
-	SaveWeather()
+	setDateAndLocationByCityName(2024, 8, 20, "Berlin", cities)
+	requestWeather()
+	saveWeather()
+	fmt.Println(today.Hours[time.Now().Hour()])
+	setDateAndLocation(2024, 8, 20, 48.1361079, 11.5753822)
+	requestWeather()
+	saveWeather()
 	fmt.Println(today.Hours[time.Now().Hour()])
 }
 
@@ -227,7 +230,7 @@ func saveJSONFile(directory, filename string, data []byte) error {
 	return nil
 }
 
-func RequestWeather() {
+func requestWeather() {
 	resp, err := http.Get(weatherAPIURL)
 	if err != nil {
 		log.Fatal(err)
@@ -244,7 +247,7 @@ func RequestWeather() {
 	}
 }
 
-func SaveWeather() {
+func saveWeather() {
 	data, err := json.MarshalIndent(today, "", "  ")
 	if err != nil {
 		log.Fatal(err)
