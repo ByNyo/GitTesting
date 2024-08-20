@@ -19,7 +19,6 @@ import (
 var weatherAPIURL string
 var geoAPIURL string
 var geoAPIKey string
-var minutesRequest int
 var latitude = 52.5170365
 var longitude = 13.3888599
 var date string
