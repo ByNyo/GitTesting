@@ -9,5 +9,4 @@ printEnv:
 
 listdir: printEnv
 	cd $$DIR
-	pwd
 	ls
