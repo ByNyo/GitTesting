@@ -1,0 +1,6 @@
+Cache Layers: 4 (including 0)
+Sizes:
+- L0 Cache: 192 KiB
+- L1 Cache: 128KiB
+- L2 Cache: 2MiB
+- L3 Cache: 8Mib
