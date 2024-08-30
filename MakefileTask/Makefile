@@ -1,6 +1,6 @@
 export DIR=/home/leon/Testing/Makefile
 
-targets:
+targets: #Sets the order
 	listdir
 	printEnv
 
