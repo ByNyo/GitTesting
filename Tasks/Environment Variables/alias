@@ -1,3 +1,4 @@
+# When you are on linux add the following to your .bashrc
 alias curlv='curl -w "
 time_namelookup:  %{time_namelookup}s
 time_connect:  %{time_connect}s
