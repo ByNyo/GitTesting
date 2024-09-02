@@ -7,5 +7,14 @@ build:
 run:
 	go run main.go
 
-runbuild:
+run-build:
 	./bin/main
+
+	.PHONY: run-background
+
+run-background:
+	@go run main.go & PID=$$!; \
+	echo "Process ID is $$PID"; \
+	ps aux | grep $$PID; \
+	wait $$PID; \
+	echo "Process $$PID has finished."
