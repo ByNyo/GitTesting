@@ -10,7 +10,7 @@ run:
 run-build:
 	./bin/main
 
-	.PHONY: run-background
+.PHONY: run-background
 
 run-background:
 	@go run main.go & PID=$$!; \
