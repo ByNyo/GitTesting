@@ -1,5 +1,4 @@
-hello:
-	echo "hello"
+.PHONY: run-background
 
 build:
 	go build -o bin/main main.go
@@ -9,8 +8,6 @@ run:
 
 run-build:
 	./bin/main
-
-.PHONY: run-background
 
 run-background:
 	@go run main.go & PID=$$!; \
