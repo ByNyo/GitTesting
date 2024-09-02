@@ -12,6 +12,6 @@ run-build:
 run-background:
 	@go run main.go & PID=$$!; \
 	echo "Process ID is $$PID"; \
-	ps aux | grep $$PID; \
+	ps axjf; \
 	wait $$PID; \
 	echo "Process $$PID has finished."
